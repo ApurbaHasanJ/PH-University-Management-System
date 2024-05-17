@@ -7,5 +7,5 @@ dotenv.config({ path: path.join(process.cwd(), '.env') });
 // Export the configuration
 export default {
   port: process.env.PORT || 5000, // Default to port 3000 if PORT is not defined
-  database_url: process.env.DATABASE_URL 
+  database_url: process.env.DATABASE_URL,
 };
