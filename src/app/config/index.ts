@@ -1,8 +1,11 @@
-import dontenv from 'dotenv';
+import dotenv from 'dotenv';
 import path from 'path';
-dontenv.config({ path: path.join(process.cwd(), '.env') });
 
+// Load environment variables from the .env file
+dotenv.config({ path: path.join(process.cwd(), '.env') });
+
+// Export the configuration
 export default {
-  port: process.env.PORT,
-  database_url: process.env.DATABASE_URL,
+  port: process.env.PORT || 5000, // Default to port 3000 if PORT is not defined
+  database_url: process.env.DATABASE_URL 
 };
