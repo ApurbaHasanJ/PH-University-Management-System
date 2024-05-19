@@ -2,7 +2,6 @@
 
 // 1. Create an interface representing a document in MongoDB.
 export type UserName = {
-  id: string;
   firstName: string;
   middleName?: string;
   lastName: string;
@@ -28,7 +27,7 @@ export type Student = {
   id: string;
   name: UserName;
   email: string;
-  gender: 'male' | 'female';
+  gender: 'male' | 'female' | 'other';
   dateOfBirth?: string;
   contactNo: string;
   emergencyContactNo: string;
