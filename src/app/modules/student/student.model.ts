@@ -18,24 +18,11 @@ const studentNameSchema = new Schema<TUserName>({
     trim: true, // to avoiding spaces x axis
     required: [true, 'Student First name is required'],
     maxlength: [20, 'First name can not be more than 20 characters'],
-    // coustom validation
-    //   validate: {
-    //     validator: function (value: string) {
-    //       const firstNameStr = value.charAt(0).toUpperCase() + value.slice(1);
-    //       return firstNameStr === value;
-    //     },
-    //     message: `{VALUE} is not in capitalized format`,
-    //   },
   },
   middleName: { type: String },
   lastName: {
     type: String,
     required: [true, 'Sutudent Last name is required'],
-    // Use validator for validation
-    // validate: {
-    //   validator: (value: string) => validator.isAlpha(value),
-    //   message: `{VALUE} is not a valid name`,
-    // },
   },
 });
 
@@ -90,6 +77,12 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
 const studentSchema = new Schema<TStudent, StudentModel>(
   {
     id: { type: String, required: true, unique: true },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, 'User id is required'],
+      unique: true,
+      ref: 'User',
+    },
     name: {
       type: studentNameSchema,
       required: [true, 'Student Name is required'],
@@ -97,11 +90,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     email: {
       type: String,
       required: [true, 'Student email is required'],
-      // Use validator for validation
-      // validate: {
-      //   validator: (value: string) => validator.isEmail(value),
-      //   message: `{VALUE} is not a valid email`,
-      // },
     },
     password: {
       type: String,
@@ -143,11 +131,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     },
     localGuardian: { type: localGuardianSchema, required: true },
     profileImg: { type: String },
-    isActive: {
-      type: String,
-      enum: ['active', 'blocked'],
-      default: 'active',
-    },
+  
     isDeleted: { type: Boolean, default: false },
   },
   // for on vertual
