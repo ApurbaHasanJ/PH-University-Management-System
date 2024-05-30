@@ -29,10 +29,9 @@ export type TStudent = {
   id: string;
   user: Types.ObjectId;
   name: TUserName;
-  password: string;
   email: string;
   gender: 'male' | 'female' | 'other';
-  dateOfBirth?: string;
+  dateOfBirth?: Date;
   contactNo: string;
   emergencyContactNo: string;
   bloodGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';

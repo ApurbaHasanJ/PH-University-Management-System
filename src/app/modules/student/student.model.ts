@@ -8,8 +8,6 @@ import {
   TUserName,
   StudentModel,
 } from './student.interface';
-import bcrypt from 'bcrypt';
-import config from '../../config';
 
 // 2. Create a Schema corresponding to the document interface.
 const studentNameSchema = new Schema<TUserName>({
@@ -91,11 +89,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       type: String,
       required: [true, 'Student email is required'],
     },
-    password: {
-      type: String,
-      required: [true, 'Password is required'],
-      minlength: [6, 'Password can not be less thant 6 charecter'],
-    },
     gender: {
       type: String,
       enum: {
@@ -104,7 +97,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       },
       required: true,
     },
-    dateOfBirth: { type: String },
+    dateOfBirth: { type: Date },
     contactNo: {
       type: String,
       required: [true, 'Student contact is required'],
@@ -131,8 +124,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     },
     localGuardian: { type: localGuardianSchema, required: true },
     profileImg: { type: String },
-  
-    isDeleted: { type: Boolean, default: false },
   },
   // for on vertual
   {
@@ -145,29 +136,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
 // mongoose vertual show non existing fields
 studentSchema.virtual('fullName').get(function () {
   return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
-});
-
-// pre save middleware/hook : will work on create() save()
-// mongoose pre save middleware
-studentSchema.pre('save', async function (next) {
-  // hashing password and save into DB
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  const user = this;
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_rounds),
-  );
-  next();
-  // console.log(this, 'pre hook : we will save data');
-});
-
-// moongoose post save middleware
-studentSchema.post('save', function (doc, next) {
-  // use this for avoid password to show in return value
-  doc.password = '';
-
-  next();
-  // console.log(this, 'post hook : we saved our data');
 });
 
 // mongoose query middleware

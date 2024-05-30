@@ -11,4 +11,4 @@ router.delete(
   '/delete-student/:studentId',
   studentControllers.deleteStudentById,
 );
-export const studentRoutes = router;
+export const StudentRoutes = router;
