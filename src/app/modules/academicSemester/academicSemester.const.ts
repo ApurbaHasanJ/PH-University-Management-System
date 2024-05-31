@@ -1,4 +1,4 @@
-import { TMonths, TSemesterCodes, TSemesters } from "./academicSemester.interface";
+import { TAcademicSemesterNameCodeMapper, TMonths, TSemesterCodes, TSemesters } from "./academicSemester.interface";
 
 
 // define the semester enum
@@ -22,10 +22,8 @@ export const Months: TMonths[] = [
   'December',
 ];
 
-export interface TAcademicSemesterCodeMapper {
-  [key: string]: string;
-}
-export const academicSemesterCodeMapper: TAcademicSemesterCodeMapper = {
+
+export const academicSemesterCodeMapper: TAcademicSemesterNameCodeMapper = {
   Autumn: '01',
   Summer: '02',
   Fall: '03',

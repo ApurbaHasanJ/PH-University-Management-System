@@ -10,9 +10,11 @@ const findLastStudentId = async () => {
     },
   )
     .sort({
-      createAt: -1,
+      createdAt: -1,
     })
     .lean();
+
+  //2030 01 0001
   return lastStudent?.id ? lastStudent.id : undefined;
 };
 
