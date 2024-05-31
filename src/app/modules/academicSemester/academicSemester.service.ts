@@ -1,3 +1,5 @@
+import httpStatus from 'http-status';
+import AppError from '../../errors/AppError';
 import { academicSemesterCodeMapper } from './academicSemester.const';
 import { TAcademicSemester } from './academicSemester.interface';
 import { AcademicSemester } from './academicSemister.model';
@@ -6,7 +8,10 @@ import { AcademicSemester } from './academicSemister.model';
 const createAcademicSemesterIntoDB = async (payload: TAcademicSemester) => {
   //business logic here
   if (academicSemesterCodeMapper[payload.name] !== payload.code) {
-    throw new Error(`${payload.name} is not a valid code ${payload.code}`);
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      `${payload.name} is not a valid code ${payload.code}`,
+    );
   }
 
   const result = await AcademicSemester.create(payload);
@@ -35,7 +40,7 @@ const updateSingleAcademicSemesterFromDB = async (
     payload.code &&
     academicSemesterCodeMapper[payload.name] !== payload.code
   ) {
-    throw new Error(`${payload.name} is not a valid code ${payload.code}`);
+    throw new AppError(httpStatus.NOT_FOUND,`${payload.name} is not a valid code ${payload.code}`);
   }
 
   const result = await AcademicSemester.findOneAndUpdate(
