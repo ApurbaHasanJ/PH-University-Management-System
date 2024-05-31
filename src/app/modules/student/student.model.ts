@@ -124,6 +124,10 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     },
     localGuardian: { type: localGuardianSchema, required: true },
     profileImg: { type: String },
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicSemester'
+    }
   },
   // for on vertual
   {
