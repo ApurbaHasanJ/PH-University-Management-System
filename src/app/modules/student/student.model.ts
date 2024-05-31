@@ -8,6 +8,8 @@ import {
   TUserName,
   StudentModel,
 } from './student.interface';
+import AppError from '../../errors/AppError';
+import httpStatus from 'http-status';
 
 // 2. Create a Schema corresponding to the document interface.
 const studentNameSchema = new Schema<TUserName>({
@@ -126,12 +128,16 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     profileImg: { type: String },
     admissionSemester: {
       type: Schema.Types.ObjectId,
-      ref: 'AcademicSemester'
+      ref: 'AcademicSemester',
     },
     academicDepartment: {
       type: Schema.Types.ObjectId,
-      ref: 'AcademicDepartment'
-    }
+      ref: 'AcademicDepartment',
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   // for on vertual
   {
@@ -141,9 +147,17 @@ const studentSchema = new Schema<TStudent, StudentModel>(
   },
 );
 
-// mongoose vertual show non existing fields
+// mongoose virtual show non existing fields
 studentSchema.virtual('fullName').get(function () {
   return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
+});
+
+studentSchema.pre('save', async function (next) {
+  const isStudentExist = await Student.findOne({ id: this.id });
+  if (!isStudentExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Student do not exist');
+  }
+  next();
 });
 
 // mongoose query middleware
@@ -167,6 +181,7 @@ studentSchema.pre('aggregate', async function (next) {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
   next();
 });
+
 
 // creating a coustom instance method
 // studentSchema.methods.isUserExists = async (id: string) => {
