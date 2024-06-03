@@ -24,7 +24,6 @@ const createUserIntoDB = async (password: string, payload: TStudent) => {
 
   const admissionSemester = await AcademicSemester.findById(payload.admissionSemester);
 
-
   // we have to build an isolated environment, so we will use session
   const session = await mongoose.startSession();
 
@@ -42,6 +41,7 @@ const createUserIntoDB = async (password: string, payload: TStudent) => {
     if (!newUser.length) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
     }
+
     // set id, _id as user
     payload.id = newUser[0].id; //embedding id
     payload.user = newUser[0]._id; //reference _id
@@ -49,9 +49,9 @@ const createUserIntoDB = async (password: string, payload: TStudent) => {
     //   create a student (transaction-2)
     const newStudent = await Student.create([payload], { session });
 
-    // console.log({newStudent})
+    console.log({newStudent})
     if (!newStudent.length) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create student');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
     }
 
     // after successful transaction we  have to commit and end

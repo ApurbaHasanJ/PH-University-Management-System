@@ -8,8 +8,8 @@ import {
   TUserName,
   StudentModel,
 } from './student.interface';
-import AppError from '../../errors/AppError';
-import httpStatus from 'http-status';
+// import AppError from '../../errors/AppError';
+// import httpStatus from 'http-status';
 
 // 2. Create a Schema corresponding to the document interface.
 const studentNameSchema = new Schema<TUserName>({
@@ -22,7 +22,7 @@ const studentNameSchema = new Schema<TUserName>({
   middleName: { type: String },
   lastName: {
     type: String,
-    required: [true, 'Sutudent Last name is required'],
+    required: [true, 'Student Last name is required'],
   },
 });
 
@@ -148,17 +148,17 @@ const studentSchema = new Schema<TStudent, StudentModel>(
 );
 
 // mongoose virtual show non existing fields
-studentSchema.virtual('fullName').get(function () {
-  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
+studentSchema?.virtual('fullName').get(function () {
+  return `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName}`;
 });
 
-studentSchema.pre('save', async function (next) {
-  const isStudentExist = await Student.findOne({ id: this.id });
-  if (!isStudentExist) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Student do not exist');
-  }
-  next();
-});
+// studentSchema.pre('save', async function (next) {
+//   const isStudentExist = await Student.findOne({ id: this.id });
+//   if (!isStudentExist) {
+//     throw new AppError(httpStatus.NOT_FOUND, 'Student do not exist');
+//   }
+//   next();
+// });
 
 // mongoose query middleware
 studentSchema.pre('find', function (next) {

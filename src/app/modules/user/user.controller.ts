@@ -10,6 +10,7 @@ const createStudent: RequestHandler = catchAsync(async (req, res) => {
 
   const result = await userServices.createUserIntoDB(password, studentData);
   console.log(result)
+  console.log(studentData)
 
   // Send response
   sendResponse(res, {
