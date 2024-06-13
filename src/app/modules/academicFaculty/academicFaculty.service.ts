@@ -24,7 +24,7 @@ const updateAcademicFacultyIntoDB = async (
     new: true,
   });
   return result;
-};
+};                                                  
 
 export const AcademicFacultyServices = {
   createAcademicFacultyIntoDB,
